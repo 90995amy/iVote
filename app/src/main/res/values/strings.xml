@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">iVote</string>
+    <string name="scan_aadhar">Scan Aadhar QR</string>
+    <string name="hint_aadhar">Enter Aadhar Number</string>
+    <string name="AADHAAR_DATA_TAG">PrintLetterBarcodeData</string>
+    <string name="AADHAR_UID_ATTR">uid</string>
+    <string name="AADHAR_NAME_ATTR">name</string>
+    <string name="AADHAR_GENDER_ATTR">gender</string>
+    <string name="AADHAR_YOB_ATTR">yob</string>
+    <string name="AADHAR_CO_ATTR">co</string>
+    <string name="AADHAR_VTC_ATTR">vtc</string>
+    <string name="AADHAR_PO_ATTR">po</string>
+    <string name="AADHAR_DIST_ATTR">dist</string>
+    <string name="AADHAR_STATE_ATTR">state</string>
+    <string name="AADHAR_PC_ATTR">pc</string>
+    <string name="title_activity_election">ElectionActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

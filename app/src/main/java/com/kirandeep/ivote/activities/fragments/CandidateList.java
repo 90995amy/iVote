@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.kirandeep.ivote.R;
+import com.kirandeep.ivote.activities.ElectionActivity;
+import com.kirandeep.ivote.models.EntryAadharData;
 
 import org.json.JSONObject;
 
@@ -47,6 +49,7 @@ public class CandidateList extends Fragment {
     private Button btnCastVote3;
     private Button btnCastVote4;
 
+    private EntryAadharData entryAadharData;
 
     private OnFragmentInteractionListener mListener;
 
@@ -81,6 +84,7 @@ public class CandidateList extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -104,8 +108,8 @@ public class CandidateList extends Fragment {
                 postData.put("peers", "[" + "\"pollingStation0.constituency1.mcelection.com\"" + "]");
                 postData.put("fcn", "invoke");
                 postData.put("args","[\"{"+"\"uid\":\"111122223333\""+"}\"]");
-                HttpPostAsyncTask task = new HttpPostAsyncTask(postData);
-                task.execute("http://172.31.77.8:4000/invoke/constituencyonechannel/mc/invoke?username=Admin&orgname=Constituency1");
+                VoterListInvoke task = new VoterListInvoke(postData);
+                task.execute("http://192.168.43.34:4000/invoke/constituencyonechannel/mc/invoke?username=Admin&orgname=Constituency1");
 
 
 
@@ -135,8 +139,11 @@ public class CandidateList extends Fragment {
                 postData.put("peers", "[" + "\"pollingStation0.constituency1.mcelection.com\"" + "]");
                 postData.put("fcn", "invoke");
                 postData.put("args","[\"{"+"\"uid\":\"111122223333\""+"}\"]");
-                HttpPostAsyncTask task = new HttpPostAsyncTask(postData);
-                task.execute("http://172.31.77.8:4000/invoke/constituencyonechannel/mc/invoke?username=Admin&orgname=Constituency1");
+                VoterListInvoke task = new VoterListInvoke(postData);
+                task.execute("http://192.168.43.34:4000/invoke/constituencyonechannel/mc/invoke?username=Admin&orgname=Constituency1");
+
+                VoteListInvoke voteListInvoke = new VoteListInvoke(postData);
+                voteListInvoke.execute("http://192.168.43.34:4000/invoke/constituencyonechannel/vc/invoke?username=Admin&orgname=Constituency1");
 
 
 
@@ -148,6 +155,10 @@ public class CandidateList extends Fragment {
 
             }
         });
+
+
+        ElectionActivity obj = (ElectionActivity) getActivity();
+        entryAadharData = obj.getVerifiedData();
 
         return rootView;
     }
@@ -191,12 +202,13 @@ public class CandidateList extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public class HttpPostAsyncTask extends AsyncTask<String, Void, Void> {
+
+    public class VoterListInvoke extends AsyncTask<String, Void, Void> {
         // This is the JSON body of the post
         JSONObject postData;
 
         // This is a constructor that allows you to pass in the JSON body
-        public HttpPostAsyncTask(Map<String, String> postData) {
+        public VoterListInvoke(Map<String, String> postData) {
             if (postData != null) {
                 this.postData = new JSONObject(postData);
             }
@@ -228,13 +240,22 @@ public class CandidateList extends Fragment {
                 // Send the post body
                 if (this.postData != null) {
                     OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
+                   // writer.write(this.postData.toString());
                     writer.write("{\n" +
                             " \t\"peers\": [\"pollingStation0.constituency1.mcelection.com\"],\n" +
                             " \t\"fcn\": \"invoke\",\n" +
-                            " \t\"args\": [\"{\\\"uid\\\":\\\"111122223333\\\",\\\"Name\\\":\\\"Kirandeep\\\",\\\"DateofBirth\\\":\\\"12.7.1978\\\",\\\"Constituency\\\":\\\"1\\\",\\\"Election\\\":\\\"M.C.\\\",\\\"NoOfVotesCast\\\":\\\"1\\\",\\\"VotedFor\\\":\\\"Candidate 1\\\"}\"]\n" +
+                            " \t\"args\": [\"{\\\"uid\\\":\\\""+ entryAadharData.getUid()+"\\\",\\\"Name\\\":\\\""+entryAadharData.getName()+"\\\",\\\"Constituency\\\":\\\"1\\\",\\\"Election\\\":\\\"M.C.\\\",\\\"NoOfVotesCast\\\":\\\"1\\\"}\"]\n" +
                             " }"/*postData.toString()*/);
                     writer.flush();
+
                 }
+
+
+//                 writer.write("{\n" +
+//                                            " \t\"peers\": [\"pollingStation0.constituency1.mcelection.com\"],\n" +
+//                                            " \t\"fcn\": \"invoke\",\n" +
+//                                            " \t\"args\": [\"{\\\"uid\\\":\\\"111122223333\\\",\\\"Name\\\":\\\"Kirandeep\\\",\\\"DateofBirth\\\":\\\"12.7.1978\\\",\\\"Constituency\\\":\\\"1\\\",\\\"Election\\\":\\\"M.C.\\\",\\\"NoOfVotesCast\\\":\\\"1\\\",\\\"VotedFor\\\":\\\"Candidate 1\\\"}\"]\n" +
+//                                            " }"/*postData.toString()*/);
 
                 int statusCode = urlConnection.getResponseCode();
 
@@ -262,4 +283,72 @@ public class CandidateList extends Fragment {
             return null;
         }
     }
+
+    public class VoteListInvoke extends AsyncTask<String, Void, Void> {
+        // This is the JSON body of the post
+        JSONObject postData;
+
+        // This is a constructor that allows you to pass in the JSON body
+        public VoteListInvoke(Map<String, String> postData) {
+            if (postData != null) {
+                this.postData = new JSONObject(postData);
+            }
+        }
+
+        // This is a function that we are overriding from AsyncTask. It takes Strings as parameters because that is what we defined for the parameters of our async task
+        @Override
+        protected Void doInBackground(String... params) {
+
+            try {
+                // This is getting the url from the string we passed in
+                URL url = new URL(params[0]);
+
+                // Create the urlConnection
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+
+                urlConnection.setDoInput(true);
+                urlConnection.setDoOutput(true);
+
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+
+                urlConnection.setRequestMethod("POST");
+
+                // OPTIONAL - Sets an authorization header
+                //urlConnection.setRequestProperty("Authorization", "someAuthString");
+
+                // Send the post body
+                if (this.postData != null) {
+                    OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
+                    // writer.write(this.postData.toString());
+                    writer.write("{\n" +
+                            "\t\"peers\": [\"pollingStation0.constituency1.mcelection.com\"],\n" +
+                            "\t\"fcn\": \"invoke\",\n" +
+                            "\t\"args\": [\"{\\\"Vote\\\":\\\"Candidate2\\\"}\"]\n" +
+                            "}");
+                    writer.flush();
+
+                }
+
+                int statusCode = urlConnection.getResponseCode();
+
+                if (statusCode == 200) {
+
+                    Log.d("Result","WooHoo");
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), "Vote Recorded", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                }
+                else throw new Exception();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
 }

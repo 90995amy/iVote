@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import com.kirandeep.ivote.R;
 import com.kirandeep.ivote.activities.fragments.CandidateList;
 import com.kirandeep.ivote.activities.fragments.ElectionList;
+import com.kirandeep.ivote.models.EntryAadharData;
 
 public class ElectionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ElectionList.OnFragmentInteractionListener,
@@ -29,6 +30,8 @@ public class ElectionActivity extends AppCompatActivity
         setContentView(R.layout.activity_election);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        EntryAadharData verifiedData = (EntryAadharData) getIntent().getSerializableExtra("AadharDetails");
 
 
 

@@ -1,10 +1,14 @@
 package com.kirandeep.ivote.models;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 /**
  * Created by abc on 11-04-2018.
  */
 
-public class EntryAadharData {
+public class EntryAadharData implements Serializable {
     String uid;
     String name;
     String gender;

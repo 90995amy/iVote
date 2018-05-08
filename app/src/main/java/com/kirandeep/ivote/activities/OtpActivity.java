@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.kirandeep.ivote.R;
 import com.kirandeep.ivote.customWidgets.OtpEditText;
+import com.kirandeep.ivote.models.EntryAadharData;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,9 +29,10 @@ public class OtpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_otp);
 
         String aadharNumber = getIntent().getStringExtra("AadharNumber");
+        final EntryAadharData verifiedData = (EntryAadharData) getIntent().getSerializableExtra("AadharDetails");
         tvAadhar = (TextView) findViewById(R.id.tvAadhar);
         mOtpEditText = findViewById(R.id.otpEditText);
-        tvAadhar.setText("Welcome "+ aadharNumber);
+        tvAadhar.setText("Welcome "+ verifiedData.getName());
 
         mOtpEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -51,6 +53,7 @@ public class OtpActivity extends AppCompatActivity {
                     Toast.makeText(OtpActivity.this,
                             "Success", Toast.LENGTH_SHORT).show();
                     Intent gotoElectionActivity = new Intent(OtpActivity.this, ElectionActivity.class);
+                    gotoElectionActivity.putExtra("AadharDetails", verifiedData);
                     startActivity(gotoElectionActivity);
                     finish();
                 } else if (s.length() == "1234".length()) {

@@ -25,6 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,6 +53,20 @@ public class CandidateList extends Fragment {
     private EntryAadharData entryAadharData;
 
     private OnFragmentInteractionListener mListener;
+
+
+    private static final Random random = new Random();
+    private static final String CHARS = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890";
+
+    public static String getToken(int length) {
+        StringBuilder token = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            token.append(CHARS.charAt(random.nextInt(CHARS.length())));
+        }
+        return token.toString();
+    }
+
+
 
     public CandidateList() {
         // Required empty public constructor
@@ -209,7 +224,6 @@ public class CandidateList extends Fragment {
 
                 urlConnection.setRequestMethod("POST");
 
-
                 // OPTIONAL - Sets an authorization header
                 //urlConnection.setRequestProperty("Authorization", "someAuthString");
 
@@ -279,6 +293,11 @@ public class CandidateList extends Fragment {
 
                 urlConnection.setRequestMethod("POST");
 
+                Long tsLong = System.currentTimeMillis()/1000;
+                String ts = tsLong.toString();
+                String key = getToken(12).concat(ts);
+
+                //  \\\"key\\\":\\\""+key+"\\\",
                 // OPTIONAL - Sets an authorization header
                 //urlConnection.setRequestProperty("Authorization", "someAuthString");
 
@@ -289,7 +308,7 @@ public class CandidateList extends Fragment {
                     writer.write("{\n" +
                             "\t\"peers\": [\"pollingStation0.constituency1.mcelection.com\"],\n" +
                             "\t\"fcn\": \"invoke\",\n" +
-                            "\t\"args\": [\"{\\\"Vote\\\":\\\"Candidate\\\""+postData+"}\"]\n" +
+                            "\t\"args\": [\"{\\\"key\\\":\\\""+key+"\\\",\\\"Vote\\\":\\\"Candidate2\\\"}\"]\n" +
                             "}");
                     writer.flush();
 

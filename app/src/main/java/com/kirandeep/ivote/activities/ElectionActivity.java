@@ -23,7 +23,7 @@ import com.kirandeep.ivote.models.EntryAadharData;
 public class ElectionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ElectionList.OnFragmentInteractionListener,
         CandidateList.OnFragmentInteractionListener{
-
+    public static EntryAadharData verifiedData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +31,7 @@ public class ElectionActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        EntryAadharData verifiedData = (EntryAadharData) getIntent().getSerializableExtra("AadharDetails");
+       verifiedData = (EntryAadharData) getIntent().getSerializableExtra("AadharDetails");
 
 
 
@@ -60,6 +60,10 @@ public class ElectionActivity extends AppCompatActivity
         }
 
     }
+
+    public EntryAadharData getVerifiedData() {
+        return this.verifiedData;
+        }
 
     @Override
     public void onBackPressed() {

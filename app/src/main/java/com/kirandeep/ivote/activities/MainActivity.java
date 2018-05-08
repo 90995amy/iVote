@@ -33,7 +33,7 @@ import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
-    private static final String BASE_URL = "http://192.168.43.58:3000/" ;
+    private static final String BASE_URL = "http://192.168.43.34:3000/" ;
     private ImageView ivScan;
     private TextInputEditText etAadhar;
     private ImageView ivSubmitAadhar;

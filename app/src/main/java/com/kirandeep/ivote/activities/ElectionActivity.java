@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 
 import com.kirandeep.ivote.R;
 import com.kirandeep.ivote.activities.fragments.CandidateList;
+import com.kirandeep.ivote.activities.fragments.CheckVoteFragment;
 import com.kirandeep.ivote.activities.fragments.ElectionList;
 import com.kirandeep.ivote.models.EntryAadharData;
 
@@ -103,20 +104,11 @@ public class ElectionActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_checkVote) {
+            CheckVoteFragment checkVoteFragment = new CheckVoteFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.election_frame, checkVoteFragment).commit();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

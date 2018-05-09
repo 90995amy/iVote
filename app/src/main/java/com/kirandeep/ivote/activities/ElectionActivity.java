@@ -1,5 +1,6 @@
 package com.kirandeep.ivote.activities;
 
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +26,7 @@ public class ElectionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ElectionList.OnFragmentInteractionListener,
         CandidateList.OnFragmentInteractionListener{
     public static EntryAadharData verifiedData;
+    public ElectionList defaultFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +54,7 @@ public class ElectionActivity extends AppCompatActivity
             }
 
             // Create a new Fragment to be placed in the activity layout
-            ElectionList defaultFragment = new ElectionList();
+            defaultFragment = new ElectionList();
 
 
             // Add the fragment to the 'fragment_container' FrameLayout
@@ -108,6 +110,10 @@ public class ElectionActivity extends AppCompatActivity
             CheckVoteFragment checkVoteFragment = new CheckVoteFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.election_frame, checkVoteFragment).commit();
+            if (defaultFragment != null){
+                 Fragment fragment = getFragmentManager().findFragmentById(defaultFragment.getId());
+                 getFragmentManager().beginTransaction().remove(fragment).commit();
+            }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

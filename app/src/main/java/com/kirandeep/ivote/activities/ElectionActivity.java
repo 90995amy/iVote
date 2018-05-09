@@ -24,7 +24,7 @@ import com.kirandeep.ivote.models.EntryAadharData;
 
 public class ElectionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ElectionList.OnFragmentInteractionListener,
-        CandidateList.OnFragmentInteractionListener{
+        CandidateList.OnFragmentInteractionListener, CheckVoteFragment.OnFragmentInteractionListener{
     public static EntryAadharData verifiedData;
     public ElectionList defaultFragment;
     @Override
